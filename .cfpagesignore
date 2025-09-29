@@ -1,0 +1,36 @@
+# Cloudflare Pages ignore file
+# Files and directories to ignore during deployment
+
+# Development files
+.env.local
+.env.development
+.env.test
+
+# Build artifacts (except dist/spa)
+node_modules/
+.git/
+.vscode/
+.idea/
+
+# Server-only files (not needed for Pages)
+server/
+api/
+netlify/
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+**/*.test.*
+**/*.spec.*
+__tests__/
+coverage/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
