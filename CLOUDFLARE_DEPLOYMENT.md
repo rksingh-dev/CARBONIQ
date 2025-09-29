@@ -35,27 +35,35 @@ Add any other environment variables your application needs from your `.env` file
 
 ## Deployment Steps
 
-### Option 1: Manual Deployment
+### Recommended: Connect to Git Repository (Automatic Deployment)
+
+1. Go to [Cloudflare Pages Dashboard](https://dash.cloudflare.com/pages)
+2. Click "Create a project"
+3. Connect your Git repository (GitHub: `rksingh-dev/CARBONIQOO`)
+4. Configure build settings:
+   - **Framework preset**: None
+   - **Build command**: `pnpm build`
+   - **Build output directory**: `dist/spa`
+   - **Root directory**: `/` (leave empty if repository root)
+   - **Node.js version**: 18 or higher
+
+5. Set environment variables in the Cloudflare Pages dashboard (see Environment Variables section below)
+
+### Option 2: Manual Deployment (CLI)
+
+If you prefer manual deployment:
 
 1. Build the project:
    ```bash
-   pnpm build:cf
+   pnpm build
    ```
 
 2. Deploy to Cloudflare Pages:
    ```bash
-   pnpm cf:deploy
+   npx wrangler pages deploy dist/spa --project-name=carboniq
    ```
 
-### Option 2: Connect to Git Repository
-
-1. Go to [Cloudflare Pages Dashboard](https://dash.cloudflare.com/pages)
-2. Click "Create a project"
-3. Connect your Git repository
-4. Configure build settings:
-   - **Build command**: `pnpm build:cf`
-   - **Build output directory**: `dist/spa`
-   - **Root directory**: `/` (leave empty if repository root)
+**Note**: The automatic Git integration is recommended as it will automatically deploy when you push changes to your repository.
 
 ## Build Configuration
 

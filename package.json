@@ -22,7 +22,7 @@
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
     "cf:dev": "wrangler pages dev dist/spa --compatibility-date=2024-09-30",
-    "cf:deploy": "wrangler pages deploy dist/spa"
+    "cf:deploy": "wrangler pages deploy dist/spa --project-name=carboniq"
   },
   "dependencies": {
     "dotenv": "^17.2.1",

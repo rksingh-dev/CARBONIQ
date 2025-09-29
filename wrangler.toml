@@ -1,12 +1,8 @@
 name = "carboniq"
 compatibility_date = "2024-09-30"
 
-[build]
-command = "pnpm build:cf"
-cwd = ""
-
-[build.upload]
-format = "modules"
+# Cloudflare Pages configuration
+pages_build_output_dir = "dist/spa"
 
 [env.production.vars]
 NODE_ENV = "production"
