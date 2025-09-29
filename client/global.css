@@ -1,0 +1,117 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   */
+  :root {
+    /* CarbonIQ light theme */
+    --background: 150 33% 98%; /* mint-50 */
+    --foreground: 167 61% 16%; /* deep green text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 167 61% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 167 61% 16%;
+
+    --primary: 163 94% 24%; /* emerald-700 */
+    --primary-foreground: 152 81% 96%; /* emerald-50 */
+
+    --secondary: 156 72% 67%; /* emerald-300 */
+    --secondary-foreground: 167 61% 16%;
+
+    --muted: 162 28% 88%;
+    --muted-foreground: 167 29% 35%;
+
+    --accent: 168 84% 39%; /* teal-600 */
+    --accent-foreground: 152 81% 96%;
+
+    --destructive: 0 84% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 161 23% 86%;
+    --input: 161 23% 86%;
+    --ring: 163 94% 24%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar */
+    --sidebar-background: 150 33% 98%;
+    --sidebar-foreground: 167 61% 16%;
+    --sidebar-primary: 163 94% 24%;
+    --sidebar-primary-foreground: 152 81% 96%;
+    --sidebar-accent: 160 44% 92%;
+    --sidebar-accent-foreground: 167 61% 16%;
+    --sidebar-border: 161 23% 86%;
+    --sidebar-ring: 168 84% 39%;
+  }
+
+  .dark {
+    /* CarbonIQ dark theme */
+    --background: 166 44% 9%;
+    --foreground: 152 81% 96%;
+
+    --card: 167 45% 10%;
+    --card-foreground: 152 81% 96%;
+
+    --popover: 167 45% 10%;
+    --popover-foreground: 152 81% 96%;
+
+    --primary: 158 64% 52%; /* emerald-500 */
+    --primary-foreground: 167 61% 12%;
+
+    --secondary: 169 57% 20%;
+    --secondary-foreground: 152 81% 96%;
+
+    --muted: 167 27% 18%;
+    --muted-foreground: 151 26% 74%;
+
+    --accent: 172 66% 40%; /* teal-500 */
+    --accent-foreground: 152 81% 96%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 167 27% 18%;
+    --input: 167 27% 18%;
+    --ring: 158 64% 52%;
+
+    --sidebar-background: 166 44% 9%;
+    --sidebar-foreground: 152 81% 96%;
+    --sidebar-primary: 158 64% 52%;
+    --sidebar-primary-foreground: 166 44% 9%;
+    --sidebar-accent: 169 57% 20%;
+    --sidebar-accent-foreground: 152 81% 96%;
+    --sidebar-border: 169 57% 20%;
+    --sidebar-ring: 172 66% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: linear-gradient(
+        hsl(var(--border)) 1px, transparent 1px
+      ),
+      linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px;
+    background-position: -1px -1px, -1px -1px;
+  }
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "252bbac9-c850-4168-b040-503133b22099",
+    "walletAddress": "0xc18dbb127bac5c1e011f288633332a1553fc0879",
+    "userId": "AITNkb4HqxUesqMU4j0CTQvdhHv2",
+    "userEmail": "rahul2004ruby@gmail.com",
+    "reportCid": "QmQkALKXSAzprEGAMshg4jjfYLBK23PuR4sugJV5Ls1QLK",
+    "reportName": "Sample_Summary.pdf",
+    "analysis": {
+      "estimatedTokens": 0,
+      "confidence": 0,
+      "summary": "Pending admin verification"
+    },
+    "status": "approved",
+    "createdAt": "2025-09-27T13:35:45.517Z",
+    "updatedAt": "2025-09-27T13:36:18.504Z",
+    "txHash": "0xd33a20461998b637c2f"
+  },
+  {
+    "id": "266851de-cb13-4cf5-ac12-c0b91e78be4e",
+    "walletAddress": "0x161975777d0c5c4ad1b160546f8c91f27338dcee",
+    "userId": "AITNkb4HqxUesqMU4j0CTQvdhHv2",
+    "userEmail": "rahul2004ruby@gmail.com",
+    "reportCid": "QmQkALKXSAzprEGAMshg4jjfYLBK23PuR4sugJV5Ls1QLK",
+    "reportName": "Sample_Summary.pdf",
+    "analysis": {
+      "estimatedTokens": 0,
+      "confidence": 0,
+      "summary": "Pending admin verification"
+    },
+    "status": "approved",
+    "createdAt": "2025-09-27T12:21:45.061Z",
+    "updatedAt": "2025-09-27T12:25:52.742Z",
+    "txHash": "0x29adede81998b23071b"
+  },
+  {
+    "id": "9a48fec3-9b1c-4770-9031-9b7db9303637",
+    "walletAddress": "0xc18dbb127bac5c1e011f288633332a1553fc0879",
+    "userId": "AITNkb4HqxUesqMU4j0CTQvdhHv2",
+    "reportCid": "QmYowsiaviDFyqARgaLSXtuozjao9f7Lqjjh4mWaRFtPSY",
+    "reportName": "Feedback form.pdf",
+    "analysis": {
+      "estimatedTokens": 0,
+      "confidence": 0,
+      "summary": "Pending admin verification"
+    },
+    "status": "rejected",
+    "createdAt": "2025-09-27T11:57:20.323Z",
+    "updatedAt": "2025-09-27T13:06:47.327Z"
+  }
+]

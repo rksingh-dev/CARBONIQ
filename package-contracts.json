@@ -1,0 +1,43 @@
+{
+  "name": "blue-carbon-token-contracts",
+  "version": "1.0.0",
+  "description": "Blue Carbon Credit Token Smart Contracts",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:sepolia": "hardhat run scripts/deploy-testnet.js --network sepolia",
+    "deploy:mumbai": "hardhat run scripts/deploy-testnet.js --network mumbai",
+    "deploy:bsc": "hardhat run scripts/deploy-testnet.js --network bscTestnet",
+    "deploy:fuji": "hardhat run scripts/deploy-testnet.js --network avalancheFuji",
+    "deploy:local": "hardhat run scripts/deploy-testnet.js --network localhost",
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "verify:mumbai": "hardhat verify --network mumbai",
+    "verify:bsc": "hardhat verify --network bscTestnet",
+    "verify:fuji": "hardhat verify --network avalancheFuji",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "coverage": "hardhat coverage"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "erc20",
+    "carbon-credits",
+    "blue-carbon",
+    "environmental",
+    "sustainability"
+  ],
+  "author": "Blue Carbon Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^4.9.3",
+    "hardhat": "^2.17.1",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
