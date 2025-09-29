@@ -1,19 +1,20 @@
 name = "carboniq"
 compatibility_date = "2024-09-30"
-pages_build_output_dir = "dist/spa"
 
 [build]
-command = "pnpm build"
+command = "pnpm build:cf"
+cwd = ""
 
-[[pages.env_vars]]
-name = "NODE_ENV"
-value = "production"
+[build.upload]
+format = "modules"
 
 [env.production.vars]
+NODE_ENV = "production"
 # Add your production environment variables here
 # FIREBASE_API_KEY = "your-api-key"
 # FIREBASE_AUTH_DOMAIN = "your-auth-domain"
 # FIREBASE_PROJECT_ID = "your-project-id"
 
 [env.preview.vars]
+NODE_ENV = "preview"
 # Add your preview environment variables here
