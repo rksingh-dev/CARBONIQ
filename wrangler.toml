@@ -1,9 +1,15 @@
 # Cloudflare Pages configuration for Git integration
-# CLI deployment is disabled - use Cloudflare Pages dashboard instead
-
 name = "carboniq"
 compatibility_date = "2024-09-30"
 compatibility_flags = ["nodejs_compat"]
 
-# This configuration is for Cloudflare Pages (not Workers)
-# Deploy via Git integration at: https://dash.cloudflare.com/pages
+# This configuration is for Cloudflare Pages.
+# To deploy, run: 
+#   npm run build
+#   npm run deploy
+# OR:
+#   npx wrangler pages deploy dist/spa
+
+# Note: Using 'npx wrangler deploy' (without 'pages') expects a Worker configuration.
+# To deploy this as a Pages project (which supports static assets + functions),
+# use the commands above.
