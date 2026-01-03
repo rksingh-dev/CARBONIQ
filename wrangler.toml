@@ -3,6 +3,7 @@ name = "carboniq"
 compatibility_date = "2024-09-30"
 compatibility_flags = ["nodejs_compat"]
 
+<<<<<<< HEAD
 main = "worker-entry.ts"
 
 [assets]
@@ -12,3 +13,15 @@ binding = "ASSETS"
 # Build configuration to ensure assets exist before deploy
 [build]
 command = "npm run build"
+=======
+# This configuration is for Cloudflare Pages.
+# To deploy, run: 
+#   npm run build
+#   npm run deploy
+# OR:
+#   npx wrangler pages deploy dist/spa
+
+# Note: Using 'npx wrangler deploy' (without 'pages') expects a Worker configuration.
+# To deploy this as a Pages project (which supports static assets + functions),
+# use the commands above.
+>>>>>>> 745c30f0c327f852aceaae251a2b0ee5746ba3a8
