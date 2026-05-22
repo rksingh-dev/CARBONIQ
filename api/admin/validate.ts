@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs' };
+export const config = { runtime: 'nodejs20.x' };
 import { verifyAdminToken } from '../../server/utils/adminAuth';
 
 export default async function handler(req: any, res: any) {

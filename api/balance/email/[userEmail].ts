@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs' };
+export const config = { runtime: 'nodejs20.x' };
 
 // Re-declare types and globals for Edge runtime
 interface UserBalance {
