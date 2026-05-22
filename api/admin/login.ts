@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs20.x' };
+export const config = { runtime: 'nodejs18.x' };
 import type { AdminLoginRequest, AdminLoginResponse } from '../../shared/api';
 import { createAdminToken, getAdminCredentials, getAdminSessionHours } from '../../server/utils/adminAuth';
 
