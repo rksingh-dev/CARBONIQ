@@ -1,12 +1,11 @@
 import path from "path";
-import crypto from "crypto";
+import { createAdminToken, getAdminSessionHours, verifyAdminToken } from "../utils/adminAuth";
 import { Ticket } from "@shared/api";
 
 const DATA_DIR = path.resolve("server/data");
 const TICKETS_FILE = path.join(DATA_DIR, "tickets.json");
 
 let ticketsCache: Ticket[] | null = null;
-const adminSessions = new Map<string, number>(); // token -> expiresAt (ms)
 
 // --- Pinata Helpers ---
 
@@ -172,20 +171,12 @@ export async function deleteTicket(id: string): Promise<boolean> {
   return true;
 }
 
-export function createAdminSession(hours = 8) {
-  const token = crypto.randomBytes(24).toString("hex");
+export function createAdminSession(username: string, hours = getAdminSessionHours()) {
   const expiresAt = Date.now() + hours * 60 * 60 * 1000;
-  adminSessions.set(token, expiresAt);
+  const token = createAdminToken(username, expiresAt);
   return { token, expiresAt };
 }
 
 export function validateAdmin(token?: string | null) {
-  if (!token) return false;
-  const exp = adminSessions.get(token);
-  if (!exp) return false;
-  if (Date.now() > exp) {
-    adminSessions.delete(token);
-    return false;
-  }
-  return true;
+  return verifyAdminToken(token).valid;
 }

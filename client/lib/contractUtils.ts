@@ -79,6 +79,7 @@ export const ERC20_SELECTORS = {
   
   // Blue Carbon Token specific functions
   mint: '0x40c10f19', // mint(address,uint256)
+  mintWithMetadata: '0x6a627842', // mintWithMetadata(address,uint256,string)
   mintCarbonCredit: '0x12345678', // mintCarbonCredit(address,uint256,string,string)
   burnCarbonCredit: '0x87654321', // burnCarbonCredit(uint256,string)
   addMinter: '0x8da5cb5b', // addMinter(address)

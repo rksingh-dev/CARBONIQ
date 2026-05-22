@@ -1,5 +1,5 @@
 export const config = { runtime: 'nodejs' };
-import { sessions } from './login';
+import { verifyAdminToken } from '../../server/utils/adminAuth';
 
 export default async function handler(req: any, res: any) {
   // CORS: allow all origins and methods
@@ -21,13 +21,12 @@ export default async function handler(req: any, res: any) {
       return res.status(401).json({ error: "Admin token required" });
     }
 
-    const session = sessions.get(token);
-    if (!session || Date.now() > session.expiresAt) {
-      sessions.delete(token);
+    const result = verifyAdminToken(token);
+    if (!result.valid) {
       return res.status(401).json({ error: "Invalid or expired token" });
     }
 
-    return res.status(200).json({ valid: true });
+    return res.status(200).json({ valid: true, expiresAt: new Date(result.expiresAt!).toISOString() });
   } catch (e: any) {
     return res.status(500).json({ error: e?.message || "Validation failed" });
   }

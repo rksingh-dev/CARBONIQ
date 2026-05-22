@@ -299,7 +299,7 @@ export const Api = {
     });
   },
 
-  async validateAdminSession(token: string): Promise<{ valid: boolean }> {
+  async validateAdminSession(token: string): Promise<{ valid: boolean; expiresAt?: string }> {
     const endpoint = "admin-validate";
     
     if (!checkRateLimit(endpoint)) {
@@ -315,7 +315,7 @@ export const Api = {
         },
       });
       
-      return handleResponse<{ valid: boolean }>(response);
+      return handleResponse<{ valid: boolean; expiresAt?: string }>(response);
     });
   },
 

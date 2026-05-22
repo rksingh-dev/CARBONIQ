@@ -38,6 +38,42 @@ let listings: MarketplaceListing[] = [];
 let orders: MarketplaceOrder[] = [];
 let listingsCid: string | null = null;
 let ordersCid: string | null = null;
+let marketplaceLoaded = false;
+
+async function fetchPinnedJson(name: string): Promise<any | null> {
+  const headers = getPinataAuthHeaders();
+  if (!headers) return null;
+  try {
+    const searchUrl = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[name]=${encodeURIComponent(name)}`;
+    const searchRes = await fetch(searchUrl, { headers: { ...headers } });
+    if (!searchRes.ok) return null;
+    const json = await searchRes.json();
+    const rows = json?.rows || json?.items || [];
+    if (!Array.isArray(rows) || rows.length === 0) return null;
+    const first = rows[0];
+    const hash = first?.ipfs_pin_hash || first?.ipfsHash || first?.cid;
+    if (!hash) return null;
+    const ipfsUrl = `https://amethyst-additional-flamingo-32.mypinata.cloud/ipfs/${hash}`;
+    const res = await fetch(ipfsUrl);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function ensureMarketplaceLoaded() {
+  if (marketplaceLoaded) return;
+  marketplaceLoaded = true;
+  const listingData = await fetchPinnedJson("marketplace_listings.json");
+  if (listingData?.listings && Array.isArray(listingData.listings)) {
+    listings = listingData.listings;
+  }
+  const orderData = await fetchPinnedJson("marketplace_orders.json");
+  if (orderData?.orders && Array.isArray(orderData.orders)) {
+    orders = orderData.orders;
+  }
+}
 
 async function pinJSON(name: string, content: any): Promise<string | null> {
   const headers = getPinataAuthHeaders();
@@ -93,6 +129,7 @@ async function updateUserBalanceByEmail(
 
 export const createListing: RequestHandler = async (req, res) => {
   try {
+    await ensureMarketplaceLoaded();
     const body = req.body as CreateListingRequest;
     const { sellerEmail, sellerUserId, sellerWallet, amountTokens, priceRupees, signature } = body;
     if (!sellerEmail || !sellerWallet || !amountTokens || !priceRupees || !signature) {
@@ -139,6 +176,7 @@ export const createListing: RequestHandler = async (req, res) => {
 
 export const listListings: RequestHandler = async (req, res) => {
   try {
+    await ensureMarketplaceLoaded();
     const status = (req.query.status as string) || "active";
     const filtered = listings.filter((l) => (status ? l.status === status : true));
     const resp: ListListingsResponse = { listings: filtered };
@@ -150,6 +188,7 @@ export const listListings: RequestHandler = async (req, res) => {
 
 export const buyListing: RequestHandler = async (req, res) => {
   try {
+    await ensureMarketplaceLoaded();
     const body = req.body as BuyListingRequest;
     const { listingId, buyerEmail, buyerUserId, buyerWallet, signature } = body;
     if (!listingId || !buyerEmail || !buyerWallet || !signature) {
