@@ -1,10 +1,10 @@
-export const config = { runtime: 'nodejs18.x' };
 import type { Ticket, CreateTicketRequest, TicketsListResponse } from '../../shared/api';
 import crypto from 'crypto';
 import { verifyAdminToken } from '../../server/utils/adminAuth';
 
 // In-memory ticket store (use database in production)
 let tickets: Ticket[] = [];
+// export const config = { runtime: 'nodejs18.x' };
 
 export default async function handler(req: any, res: any) {
   // CORS: allow all origins and methods

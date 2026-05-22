@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs18.x' };
+// export const config = { runtime: 'nodejs18.x' };
 
 function getPinataAuthHeaders() {
   const jwt = process.env.PINATA_JWT || process.env.VITE_PINATA_JWT;

@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs18.x' };
+// export const config = { runtime: 'nodejs18.x' };
 import type { UpdateTicketRequest } from '../../shared/api';
 import { tickets } from './index';
 import { verifyAdminToken } from '../../server/utils/adminAuth';
