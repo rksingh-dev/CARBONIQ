@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs' };
+// export const config = { runtime: 'nodejs18.x' };
 import type { ListListingsResponse } from '../../shared/api';
 import { listings } from './list';
 

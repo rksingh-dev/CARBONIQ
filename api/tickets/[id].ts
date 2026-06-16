@@ -1,7 +1,7 @@
-export const config = { runtime: 'nodejs' };
+// export const config = { runtime: 'nodejs18.x' };
 import type { UpdateTicketRequest } from '../../shared/api';
 import { tickets } from './index';
-import { sessions } from '../admin/login';
+import { verifyAdminToken } from '../../server/utils/adminAuth';
 
 export default async function handler(req: any, res: any) {
   // CORS: allow all origins and methods
@@ -45,8 +45,8 @@ async function handleUpdateTicket(req: any, res: any, id: string) {
       return res.status(401).json({ error: "Admin token required" });
     }
 
-    const session = sessions.get(adminToken);
-    if (!session || Date.now() > session.expiresAt) {
+    const isAdmin = verifyAdminToken(adminToken).valid;
+    if (!isAdmin) {
       return res.status(401).json({ error: "Invalid or expired admin token" });
     }
 
@@ -85,8 +85,8 @@ async function handleDeleteTicket(req: any, res: any, id: string) {
 
     // Check permissions
     if (adminToken) {
-      const session = sessions.get(adminToken);
-      if (!session || Date.now() > session.expiresAt) {
+      const isAdmin = verifyAdminToken(adminToken).valid;
+      if (!isAdmin) {
         return res.status(401).json({ error: "Invalid or expired admin token" });
       }
     } else if (walletAddress && ticket.walletAddress === walletAddress) {

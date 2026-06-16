@@ -23,8 +23,10 @@ export default function Marketplace() {
     return Number.isFinite(num) ? num : 0;
   }, [sellAmount]);
 
-  const ensureWallet = useCallback(async () => {
-    if (!account) await connect();
+  const ensureWallet = useCallback(async (): Promise<string | null> => {
+    if (account) return account;
+    const connected = await connect();
+    return connected;
   }, [account, connect]);
 
   const loadListings = useCallback(async () => {
@@ -46,8 +48,8 @@ export default function Marketplace() {
       alert("Sign in with Google first");
       return;
     }
-    await ensureWallet();
-    if (!account) {
+    const activeAccount = await ensureWallet();
+    if (!activeAccount) {
       alert("Connect MetaMask to proceed");
       return;
     }
@@ -58,22 +60,22 @@ export default function Marketplace() {
     }
 
     try {
-      const message = `List ${amt} tokens for ${amt} rupees from ${account} at ${new Date().toISOString()}`;
+      const message = `List ${amt} tokens for ${amt} rupees from ${activeAccount} at ${new Date().toISOString()}`;
       const signature: string = await window.ethereum!.request({
         method: "personal_sign",
-        params: [message, account],
+        params: [message, activeAccount],
       });
       const resp = await Api.createListing({
         sellerEmail: user.email,
         sellerUserId: user.uid,
-        sellerWallet: account,
+        sellerWallet: activeAccount,
         amountTokens: amt,
         priceRupees: amt,
         signature,
       });
       setSellAmount("");
       await loadListings();
-      alert(`Listed ${resp.listing.amountTokens} tokens for [4m[0m${resp.listing.priceRupees} rupees`);
+      alert(`Listed ${resp.listing.amountTokens} tokens for ₹ ${resp.listing.priceRupees} rupees`);
     } catch (e: any) {
       alert(e?.message || "Failed to create listing");
     }
@@ -84,8 +86,8 @@ export default function Marketplace() {
       alert("Sign in with Google first");
       return;
     }
-    await ensureWallet();
-    if (!account) {
+    const activeAccount = await ensureWallet();
+    if (!activeAccount) {
       alert("Connect MetaMask to proceed");
       return;
     }
@@ -95,16 +97,16 @@ export default function Marketplace() {
     }
 
     try {
-      const message = `Buy listing ${l.id} for ${l.priceRupees} rupees by ${account} at ${new Date().toISOString()}`;
+      const message = `Buy listing ${l.id} for ${l.priceRupees} rupees by ${activeAccount} at ${new Date().toISOString()}`;
       const signature: string = await window.ethereum!.request({
         method: "personal_sign",
-        params: [message, account],
+        params: [message, activeAccount],
       });
       const resp = await Api.buyListing({
         listingId: l.id,
         buyerEmail: user.email,
         buyerUserId: user.uid,
-        buyerWallet: account,
+        buyerWallet: activeAccount,
         signature,
       });
       await loadListings();

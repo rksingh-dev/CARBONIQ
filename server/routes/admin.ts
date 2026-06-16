@@ -1,17 +1,17 @@
 import type { RequestHandler } from "express";
 import { AdminLoginRequest, AdminLoginResponse } from "@shared/api";
-import { createAdminSession, validateAdmin } from "./store";
+import { createAdminSession } from "./store";
+import { getAdminCredentials, verifyAdminToken } from "../utils/adminAuth";
 
 export const adminLogin: RequestHandler = (req, res) => {
   const { username, password } = req.body as AdminLoginRequest;
-  const expectedUser = process.env.ADMIN_USERNAME || "admin";
-  const expectedPass = process.env.ADMIN_PASSWORD || "admin";
+  const { username: expectedUser, password: expectedPass } = getAdminCredentials();
 
   if (username !== expectedUser || password !== expectedPass) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 
-  const { token, expiresAt } = createAdminSession(8);
+  const { token, expiresAt } = createAdminSession(expectedUser);
   const response: AdminLoginResponse = {
     token,
     expiresAt: new Date(expiresAt).toISOString(),
@@ -21,11 +21,10 @@ export const adminLogin: RequestHandler = (req, res) => {
 
 export const validateAdminSession: RequestHandler = (req, res) => {
   const adminToken = req.header("x-admin-token");
-  const isValid = validateAdmin(adminToken);
-  
-  if (isValid) {
-    return res.status(200).json({ valid: true });
-  } else {
-    return res.status(401).json({ valid: false, error: "Invalid or expired session" });
+  const result = verifyAdminToken(adminToken);
+
+  if (result.valid) {
+    return res.status(200).json({ valid: true, expiresAt: new Date(result.expiresAt!).toISOString() });
   }
+  return res.status(401).json({ valid: false, error: "Invalid or expired session" });
 };

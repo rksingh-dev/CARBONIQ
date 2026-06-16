@@ -1,8 +1,6 @@
-export const config = { runtime: 'nodejs' };
+// export const config = { runtime: 'nodejs18.x' };
 import type { AdminLoginRequest, AdminLoginResponse } from '../../shared/api';
-
-// In-memory session store (for serverless, consider using Redis/DB for production)
-const sessions = new Map<string, { expiresAt: number }>();
+import { createAdminToken, getAdminCredentials, getAdminSessionHours } from '../../server/utils/adminAuth';
 
 export default async function handler(req: any, res: any) {
   // CORS: allow all origins and methods
@@ -24,14 +22,13 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: "Username and password required" });
     }
 
-    // Simple hardcoded admin check (use proper auth in production)
-    if (username !== "admin" || password !== "admin123") {
+    const { username: expectedUser, password: expectedPass } = getAdminCredentials();
+    if (username !== expectedUser || password !== expectedPass) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = `admin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-    sessions.set(token, { expiresAt });
+    const expiresAt = Date.now() + getAdminSessionHours() * 60 * 60 * 1000;
+    const token = createAdminToken(expectedUser, expiresAt);
 
     const response: AdminLoginResponse = {
       token,
@@ -43,6 +40,3 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({ error: e?.message || "Login failed" });
   }
 }
-
-// Export sessions for validation endpoint
-export { sessions };

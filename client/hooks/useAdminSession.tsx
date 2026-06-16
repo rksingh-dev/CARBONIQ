@@ -45,16 +45,16 @@ export function useAdminSession() {
   const warningShownRef = useRef(false);
 
   // Validate session with server
-  const validateSession = useCallback(async (token: string): Promise<boolean> => {
+  const validateSession = useCallback(async (token: string): Promise<{ valid: boolean; expiresAt?: string }> => {
     try {
       const response = await Api.validateAdminSession(token);
-      return response.valid;
+      return response;
     } catch (error: any) {
       if (error?.status === 401 || /unauthor/i.test(error?.message || "")) {
-        return false;
+        return { valid: false };
       }
       // For other errors, assume session is still valid
-      return true;
+      return { valid: true };
     }
   }, []);
 
@@ -87,11 +87,10 @@ export function useAdminSession() {
 
     setIsValidating(true);
     try {
-      const isValid = await validateSession(storedToken);
-      if (isValid) {
-        // Create a mock session object - we don't have expiresAt from validation
-        // For now, assume 8 hours from now (matching server default)
-        const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
+      const result = await validateSession(storedToken);
+      if (result.valid) {
+        // Use server expiry when available; otherwise assume 8 hours (server default)
+        const expiresAt = result.expiresAt || new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
         setSession({
           token: storedToken,
           expiresAt,
@@ -185,9 +184,9 @@ export function useAdminSession() {
 
     setIsValidating(true);
     try {
-      const isValid = await validateSession(session.token);
-      if (isValid) {
-        setSession(prev => prev ? { ...prev, isValid: true } : null);
+      const result = await validateSession(session.token);
+      if (result.valid) {
+        setSession(prev => prev ? { ...prev, isValid: true, expiresAt: result.expiresAt || prev.expiresAt } : null);
         return true;
       } else {
         logout();

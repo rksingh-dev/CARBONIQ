@@ -1,9 +1,10 @@
-export const config = { runtime: 'nodejs' };
 import type { Ticket, CreateTicketRequest, TicketsListResponse } from '../../shared/api';
 import crypto from 'crypto';
+import { verifyAdminToken } from '../../server/utils/adminAuth';
 
 // In-memory ticket store (use database in production)
 let tickets: Ticket[] = [];
+// export const config = { runtime: 'nodejs18.x' };
 
 export default async function handler(req: any, res: any) {
   // CORS: allow all origins and methods
@@ -35,27 +36,17 @@ export default async function handler(req: any, res: any) {
 async function handleListTickets(req: any, res: any) {
   try {
     const walletAddress = req.query.walletAddress as string;
-    const adminToken = req.headers['x-admin-token'] as string;
+    const adminToken = req.headers['x-admin-token'] as string | undefined;
+    const isAdmin = verifyAdminToken(adminToken).valid;
 
     let filtered = tickets;
-
-    // Admin can see all tickets
-    if (adminToken) {
-      try {
-        const mod = await import('../admin/login');
-        const sessions = (mod as any).sessions as Map<string, { expiresAt: number }> | undefined;
-        const session = sessions?.get(adminToken);
-        if (!session || Date.now() > session.expiresAt) {
-          return res.status(401).json({ error: "Invalid or expired admin token" });
-        }
-      } catch {
-        return res.status(401).json({ error: "Admin validation unavailable" });
+    if (!isAdmin) {
+      if (!walletAddress) {
+        return res.status(400).json({ error: "Wallet address required for non-admin users" });
       }
-    } else if (walletAddress) {
-      // Non-admin users can only see their own tickets
       filtered = tickets.filter(t => t.walletAddress === walletAddress);
-    } else {
-      return res.status(400).json({ error: "Wallet address required for non-admin users" });
+    } else if (walletAddress) {
+      filtered = tickets.filter(t => t.walletAddress === walletAddress);
     }
 
     const response: TicketsListResponse = { tickets: filtered };

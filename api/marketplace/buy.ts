@@ -1,4 +1,4 @@
-export const config = { runtime: 'edge' };
+// export const config = { runtime: 'nodejs18.x' };
 import type { MarketplaceOrder, BuyListingRequest, BuyListingResponse } from '../../shared/api';
 
 // Global store for Edge runtime

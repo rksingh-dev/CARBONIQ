@@ -1,5 +1,5 @@
-import serverless from "serverless-http";
 import { createServer } from "../server";
 
 const app = createServer();
-export default serverless(app);
+// export const config = { runtime: "nodejs18.x" };
+export default app;
